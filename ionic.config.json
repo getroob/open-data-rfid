@@ -1,0 +1,8 @@
+{
+  "name": "RFID Tracker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
+  "id": "84bb4e77"
+}
