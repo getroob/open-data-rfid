@@ -1,57 +1,42 @@
-import MessageListItem from '../components/MessageListItem';
-import { useState } from 'react';
-import { Message, getMessages } from '../data/messages';
-import {
-  IonContent,
-  IonHeader,
-  IonList,
-  IonPage,
-  IonRefresher,
-  IonRefresherContent,
-  IonTitle,
-  IonToolbar,
-  useIonViewWillEnter
-} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonIcon, IonLabel, IonNavLink, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { analytics, search } from 'ionicons/icons';
 import './Home.css';
+import LogisticsTracking from './LogisticsTracking';
+import MetaChecker from './MetaChecker';
 
 const Home: React.FC = () => {
-
-  const [messages, setMessages] = useState<Message[]>([]);
-
-  useIonViewWillEnter(() => {
-    const msgs = getMessages();
-    setMessages(msgs);
-  });
-
-  const refresh = (e: CustomEvent) => {
-    setTimeout(() => {
-      e.detail.complete();
-    }, 3000);
-  };
-
   return (
     <IonPage id="home-page">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Inbox</IonTitle>
+          <IonTitle>Home</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonRefresher slot="fixed" onIonRefresh={refresh}>
-          <IonRefresherContent></IonRefresherContent>
-        </IonRefresher>
-
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">
-              Inbox
-            </IonTitle>
+            <IonTitle size="large">Home</IonTitle>
           </IonToolbar>
         </IonHeader>
 
-        <IonList>
-          {messages.map(m => <MessageListItem key={m.id} message={m} />)}
-        </IonList>
+        <>
+          <IonNavLink routerDirection="forward" component={() => <LogisticsTracking />}>
+            <IonButton fill="outline" expand="block" className="routing-button">
+              <div>
+                <IonIcon slot="start" icon={analytics} size="large"></IonIcon>
+                <IonLabel class="button-label">Logistics Tracking</IonLabel>
+              </div>
+            </IonButton>
+          </IonNavLink>
+          <IonNavLink routerDirection="forward" component={() => <MetaChecker />}>
+            <IonButton fill="outline" expand="block" className="routing-button">
+              <div>
+                <IonIcon slot="start" icon={search} size="large"></IonIcon>
+                <IonLabel class="button-label">Meta Checker</IonLabel>
+              </div>
+            </IonButton>
+          </IonNavLink>
+        </>
       </IonContent>
     </IonPage>
   );
