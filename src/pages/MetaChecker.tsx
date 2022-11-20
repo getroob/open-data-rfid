@@ -18,6 +18,7 @@ import Airtable from 'airtable';
 import axios from 'axios';
 
 const MetaChecker = () => {
+  const testMac = '04:13:74:66:13:5d:80';
   const [tagContent, setTagContent] = useState('test');
   const [productDetails, setProductDetails] = useState<any>(null);
   const airtable = new Airtable({ apiKey: process.env.REACT_APP_AIRTABLE_TOKEN }).base('app6aXPMAPPizG18I');
@@ -79,7 +80,7 @@ const MetaChecker = () => {
               <>
                 <IonIcon icon={informationCircle} class="info-icon ion-margin-vertical" color="primary"></IonIcon>
                 <IonLabel class="info-row">Tag ID(TESTING): {tagContent}</IonLabel>
-                {productDetails && tagContent === 'test' && (
+                {productDetails && (tagContent === 'test' || tagContent === testMac) && (
                   <>
                     <IonLabel class="info-row">Company: {productDetails.Company}</IonLabel>
                     <IonLabel class="info-row">Transfer ID: {productDetails['Transfer Id']}</IonLabel>
