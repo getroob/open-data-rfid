@@ -4,24 +4,37 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonTabButton,
   IonIcon,
   IonLabel,
-  IonTabs,
-  IonTabBar,
-  IonRouterOutlet,
   IonButtons,
   IonBackButton,
+  IonButton,
+  IonRow,
+  IonCol,
 } from '@ionic/react';
 import { business, storefront, cart } from 'ionicons/icons';
 import axios from 'axios';
-import { Route } from 'react-router';
+import { useEffect, useState } from 'react';
 import ProductList from '../components/ProductList';
-import { useEffect } from 'react';
 
 const LogisticsTracking: React.FC = () => {
+  const [products, setProducts] = useState<any>(null);
+  const [activeList, setActiveList] = useState('warehouse');
   useEffect(() => {
-    axios.get('/Products').then((res) => console.log(res.data.records));
+    axios.get('/Transfers').then((res) => {
+      let temp: any = {};
+      res.data.records.forEach((rec: any) => {
+        const header = rec.fields.Location.toLowerCase();
+        if (temp[header]) {
+          let t = temp[header];
+          t.push({ ...rec.fields });
+          temp[header] = t;
+        } else {
+          temp[header] = [{ ...rec.fields }];
+        }
+      });
+      setProducts(temp);
+    });
   }, []);
   return (
     <IonPage id="logistics">
@@ -34,29 +47,48 @@ const LogisticsTracking: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonTabs>
-          <IonRouterOutlet id="tabs">
-            <Route path="/:tab(warehouse)" render={() => <ProductList location="Warehouse" />} exact />
-            <Route path="/:tab(inhouse)" render={() => <ProductList location="Inhouse" />} exact />
-            <Route path="/:tab(stock)" render={() => <ProductList location="Stock" />} exact />
-          </IonRouterOutlet>
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="warehouse">
-              <IonIcon icon={business} />
-              <IonLabel>Warehouse</IonLabel>
-            </IonTabButton>
-
-            <IonTabButton tab="inhouse">
-              <IonIcon icon={storefront} />
-              <IonLabel>Store</IonLabel>
-            </IonTabButton>
-
-            <IonTabButton tab="stock">
-              <IonIcon icon={cart} />
-              <IonLabel>Stock</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
+        <IonRow>
+          <IonCol>
+            <IonButton
+              fill={activeList === 'warehouse' ? 'solid' : 'outline'}
+              expand="block"
+              class="ion-text-wrap location-btn"
+              onClick={() => setActiveList('warehouse')}
+            >
+              <div>
+                <IonIcon icon={business} />
+                <IonLabel style={{ display: 'block' }}>Warehouse</IonLabel>
+              </div>
+            </IonButton>
+          </IonCol>
+          <IonCol>
+            <IonButton
+              fill={activeList === 'store' ? 'solid' : 'outline'}
+              expand="block"
+              class="ion-text-wrap location-btn"
+              onClick={() => setActiveList('store')}
+            >
+              <div>
+                <IonIcon icon={storefront} />
+                <IonLabel style={{ display: 'block' }}>Store</IonLabel>
+              </div>
+            </IonButton>
+          </IonCol>
+          <IonCol>
+            <IonButton
+              fill={activeList === 'stock' ? 'solid' : 'outline'}
+              expand="block"
+              class="ion-text-wrap location-btn"
+              onClick={() => setActiveList('stock')}
+            >
+              <div>
+                <IonIcon icon={cart} />
+                <IonLabel style={{ display: 'block' }}>Stock</IonLabel>
+              </div>
+            </IonButton>
+          </IonCol>
+        </IonRow>
+        {products && <ProductList products={products[activeList]} />}
       </IonContent>
     </IonPage>
   );

@@ -6,3 +6,16 @@
   display: block;
   text-decoration: none;
 }
+
+.info-icon {
+  font-size: 128px;
+}
+
+.info-row {
+  margin: 8px 0px;
+  display: block;
+}
+
+.location-btn {
+  height: 70px;
+}

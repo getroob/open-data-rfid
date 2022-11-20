@@ -3,12 +3,10 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
-import Airtable from 'airtable';
 import axios from 'axios';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
-new Airtable({ apiKey: process.env.REACT_APP_AIRTABLE_TOKEN }).base('app6aXPMAPPizG18I');
 axios.defaults.baseURL = 'https://api.airtable.com/v0/app6aXPMAPPizG18I';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers['Authorization'] = `Bearer ${process.env.REACT_APP_AIRTABLE_TOKEN}`;
