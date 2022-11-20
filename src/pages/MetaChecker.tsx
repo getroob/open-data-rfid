@@ -26,6 +26,22 @@ const MetaChecker = () => {
   useEffect(() => {
     if (typeof nfc !== 'undefined') {
       nfc.addTagDiscoveredListener(onNfc);
+    } else if ('NDEFReader' in window) {
+      const ndef = new NDEFReader();
+      ndef
+        .scan()
+        .then(() => {
+          console.log('Scan started successfully.');
+          ndef.onreadingerror = () => {
+            console.log('Cannot read data from the NFC tag. Try another one?');
+          };
+          ndef.onreading = (event: any) => {
+            setTagContent(event.serialNumber);
+          };
+        })
+        .catch((error: any) => {
+          console.log(`Error! Scan failed to start: ${error}.`);
+        });
     }
   }, []);
 
