@@ -37,7 +37,6 @@ const MetaChecker = () => {
           .firstPage((err, records) => {
             if (records) {
               setProductDetails(records[0].fields);
-              console.log(records[0].fields);
             }
           });
       });
@@ -75,14 +74,19 @@ const MetaChecker = () => {
       <IonContent fullscreen>
         <IonRow class="ion-align-items-center" style={{ height: '70%' }}>
           <IonCol class="ion-text-center">
-            {productDetails ? (
+            {tagContent ? (
               <>
                 <IonIcon icon={informationCircle} class="info-icon ion-margin-vertical" color="primary"></IonIcon>
-                <IonLabel class="info-row">Company: {productDetails.Company}</IonLabel>
-                <IonLabel class="info-row">Transfer ID: {productDetails['Transfer Id']}</IonLabel>
-                <IonLabel class="info-row">Created date: {productDetails.Created}</IonLabel>
-                <IonLabel class="info-row">Location: {productDetails.Location}</IonLabel>
-                <IonLabel class="info-row">Last interacted by: {productDetails.User}</IonLabel>
+                <IonLabel class="info-row">Tag ID(TESTING): {tagContent}</IonLabel>
+                {productDetails && tagContent === 'test' && (
+                  <>
+                    <IonLabel class="info-row">Company: {productDetails.Company}</IonLabel>
+                    <IonLabel class="info-row">Transfer ID: {productDetails['Transfer Id']}</IonLabel>
+                    <IonLabel class="info-row">Created date: {productDetails.Created}</IonLabel>
+                    <IonLabel class="info-row">Location: {productDetails.Location}</IonLabel>
+                    <IonLabel class="info-row">Last interacted by: {productDetails.User}</IonLabel>
+                  </>
+                )}
               </>
             ) : (
               <>
